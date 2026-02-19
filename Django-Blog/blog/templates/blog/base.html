@@ -1,0 +1,40 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Django Blog</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'blog/main.css' %}">
+</head>
+
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'blog-home' %}">Django Blog</a>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'user-posts' user.username %}" class="btn text-white">My Posts</a>
+        <a href="{% url 'post-create' %}" class="btn text-white">New Post</a>
+        <a href="{% url 'profile' %}" class="btn text-white">{{ user.username }}</a>
+        
+
+        <!-- ✅ LOGOUT MUST BE POST -->
+        <form method="post" action="{% url 'logout' %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn text-white">Logout</button>
+        </form>
+
+    {% else %}
+        <a href="{% url 'login' %}" class="btn text-white">Login</a>
+        <a href="{% url 'register' %}" class="btn text-white">Register</a>
+    {% endif %}
+</nav>
+
+<div class="container mt-3">
+    {% block content %}{% endblock %}
+
+
+</div>
+</body>
+</html>
